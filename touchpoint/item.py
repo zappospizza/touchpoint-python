@@ -13,7 +13,7 @@ class Item():
             self.tax_rates = []
         else:
             self.tax_rates = tax_rates
-        
+
         self.item_id = item_id
         self.name = name
         self.description = description

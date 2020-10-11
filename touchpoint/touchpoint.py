@@ -5,6 +5,7 @@ import requests
 class Touchpoint():
     from .employee import Employee
     from .location import Location
+    from .item import Item
 
     def __init__(self, api_key=None):
         if api_key is None:
@@ -77,3 +78,37 @@ class Touchpoint():
                              name=loc['name'],
                              address=loc['address'],
                              phone=loc['phone'])
+
+    # Fetch all items
+    def get_items(self, store_id=None):
+        items = []
+        path = f'/api/location/{store_id}/items'
+
+        req = requests.get(self.url(path, pretty=True), headers=self._headers())
+
+        items_data = json.loads(req.text)
+
+        for item in items_data['data']['items']:
+            items.append(self.Item(item_id=item['id'],
+                                   name=item['name'],
+                                   description=item['description'],
+                                   reporting_categories=item['reportingCategories'],
+                                   tax_rates=item['taxRates'],
+                                   item_type=item['type']))
+        return items
+
+    # Fetch an item
+    def get_item(self, store_id=None, item_id=None):
+        path = f'/api/location/{store_id}/items/{item_id}'
+        req = requests.get(self.url(path, pretty=True), headers=self._headers())
+
+        item_data = json.loads(req.text)
+
+        item = item_data['data']['items'][0]
+
+        return self.Item(item_id=item['id'],
+                         name=item['name'],
+                         description=item['description'],
+                         reporting_categories=item['reportingCategories'],
+                         tax_rates=item['taxRates'],
+                         item_type=item['type'])
