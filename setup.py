@@ -3,7 +3,7 @@ import setuptools
 with open("README.md", "r") as f:
     long_description = f.read()
 
-with open('LICENSE') as f:
+with open('LICENSE.md') as f:
     license = f.read()
 
 setuptools.setup(
